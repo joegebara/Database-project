@@ -1,0 +1,105 @@
+CREATE TABLE Entities (
+ entities_id INT PRIMARY KEY
+);
+CREATE TABLE Communities (
+ entities_id INT PRIMARY KEY,
+ name VARCHAR(30),
+ description VARCHAR(100),
+ FOREIGN KEY (entities_id) REFERENCES Entities(entities_id)
+);
+CREATE TABLE Individuals (
+ entities_id INT PRIMARY KEY,
+ name VARCHAR (30),
+ last_name VARCHAR(30),
+ geographic_coordinates INT,
+ FOREIGN KEY (entities_id) REFERENCES Entities(entities_id)
+);
+CREATE TABLE G1account (
+ account_id INT PRIMARY KEY,
+ public_key VARCHAR(30) UNIQUE NOT NULL,
+ entities_id INT NOT NULL,
+ FOREIGN KEY (entities_id) REFERENCES Entities(entities_id)
+);
+CREATE TABLE Message (
+ message_id INT PRIMARY KEY,
+ message_content VARCHAR(100),
+ addressed_to INT NOT NULL,
+ send_by INT NOT NULL,
+ reference INT NULL,
+ FOREIGN KEY (addressed_to) REFERENCES Entities(entities_id),
+ FOREIGN KEY (send_by) REFERENCES Entities(entities_id),
+ FOREIGN KEY (reference) REFERENCES Message(message_id)
+7
+);
+CREATE TABLE Skill (
+ skill_id INT PRIMARY KEY,
+ skill_type VARCHAR(30) NOT NULL
+);
+CREATE TABLE Service_types (
+ name_type VARCHAR(30) PRIMARY KEY,
+ CHECK (name_type IN ('free_of_charge', 'exchange', 'commercial'))
+);
+CREATE TABLE Services (
+ service_id INT PRIMARY KEY,
+ name VARCHAR(30),
+ description VARCHAR(100),
+ servicetype VARCHAR (30) NOT NULL,
+ FOREIGN KEY (servicetype) REFERENCES Service_types(name_type)
+);
+CREATE TABLE Relationship (
+ relationship_id INT PRIMARY KEY,
+ description VARCHAR(100),
+ entities_id INT NOT NULL,
+ targets INT NOT NULL,
+ FOREIGN KEY (entities_id) REFERENCES Individuals(entities_id),
+ FOREIGN KEY (targets) REFERENCES Individuals(entities_id)
+);
+CREATE TABLE Membership (
+ membership_id INT PRIMARY KEY,
+ joined_at DATE NOT NULL,
+ exclued BOOLEAN DEFAULT FALSE,
+ targets INT NOT NULL,
+ declares INT NOT NULL,
+ FOREIGN KEY (targets) REFERENCES Communities(entities_id),
+ FOREIGN KEY (declares) REFERENCES Individuals (entities_id)
+);
+CREATE TABLE Link (
+ Link_id INT PRIMARY KEY,
+ description VARCHAR(100),
+ targets INT NOT NULL,
+ declares INT NOT NULL,
+8
+ FOREIGN KEY (targets) REFERENCES Communities(entities_id),
+ FOREIGN KEY (declares) REFERENCES Communities(entities_id)
+);
+CREATE TABLE Individuals_proposes_services (
+ service_id INT,
+ entities_id INT,
+ PRIMARY KEY (service_id, entities_id),
+ FOREIGN KEY (entities_id) REFERENCES Individuals(entities_id),
+ FOREIGN KEY (service_id) REFERENCES Services(service_id)
+);
+CREATE TABLE Individuals_sharing_Individuals (
+ entities_id1 INT,
+ entities_id2 INT,
+ PRIMARY KEY(entities_id1, entities_id2),
+ FOREIGN KEY(entities_id1) REFERENCES Individuals(entities_id),
+ FOREIGN KEY(entities_id2) REFERENCES Individuals(entities_id)
+);
+CREATE TABLE Vote (
+ membership_id1 INT,
+ membership_id2 INT,
+ votedate DATE,
+ PRIMARY KEY(membership_id1, membership_id2),
+ FOREIGN KEY(membership_id1) REFERENCES Membership(membership_id),
+ FOREIGN KEY(membership_id2) REFERENCES Membership(membership_id)
+);
+CREATE TABLE Expertise (
+ entities_id INT,
+ skill_id INT,
+ degree_expertise INT,
+ CHECK (degree_expertise BETWEEN 1 AND 5),
+ PRIMARY KEY(entities_id, skill_id),
+ FOREIGN KEY(entities_id) REFERENCES Entities(entities_id),
+ FOREIGN KEY(skill_id) REFERENCES Skill(skill_id)
+);
