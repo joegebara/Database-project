@@ -1,0 +1,20 @@
+Entities(#entities_id)
+Communities(#entities_id => Entities : int, name : string, description : string)
+Individuals(#entities_id => Entities : int, name : string, last_name : string,
+geographic_coordinates : int)
+VCommunities=join(Entities, Communities, entities_id = entities_id)
+VIndividuals=join(Entities, Individuals, entities_id = entities_id)
+G1account(#account_id : int, public_key : string, entities_id => Entities)
+Message(#message_id : int, message_content : string, addressed_to => Entities, send_by =>
+Entities, reference => Message)
+Skill(#skill_id : int, skill_type : string)
+Services(#service_id : int, name : string, description : string, servicetype : Service_types)
+Relationship(#relationship_id : int, description : string, entities_id => Individuals, targets =>
+Individuals)
+Membership(#membership_id : int, joined_at : date, excluded : boolean, targets =>
+Communities, declares => Individuals)
+Link(#link_id : int, description : string, targets => Communities, declares => Communities)
+Individuals_proposes_services(service_id => Services, entities_id => Individuals)
+Individuals_sharing_Individuals(entities_id1 => Individuals, entities_id2 => Individuals)
+Vote(membership_id1 => Membership, membership_id2 => Membership, votedate : date)
+Expertise(entities_id => Entities, skill_id => Skill, degree_expertise : int[1..5])
