@@ -1,0 +1,31 @@
+-- Entities --
+INSERT INTO Entities VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9);
+-- Communities --
+INSERT INTO Communities VALUES (1,'OpenSource Group','Tech sharing community');
+-- Individuals --
+INSERT INTO Individuals VALUES (4,'Alice','Martin',12345);
+-- Accounts --
+INSERT INTO G1account VALUES (1,'PUBKEY1',4);
+-- Message --
+INSERT INTO Message VALUES (1,'Hello community!',1,4,NULL);
+-- Service_types --
+INSERT INTO Service_types VALUES ('free_of_charge');
+-- Services --
+INSERT INTO Services VALUES (1,'Web Design','Website creation','commercial');
+-- Skill --
+INSERT INTO Skill VALUES (1,'Web Development');
+-- Expertise --
+INSERT INTO Expertise VALUES (4,1,4);
+-- Relationship --
+INSERT INTO Relationship VALUES (1,'Friend',4,5);
+-- Membership --
+INSERT INTO Membership VALUES (1,'2023-01-01',FALSE,1,4);
+-- Link --
+INSERT INTO Link VALUES (1,'Partnership',1,2);
+10
+-- Individuals_proposes_Services --
+INSERT INTO Individuals_proposes_Services VALUES (1,4);
+-- Individuals_sharing_Individuals --
+INSERT INTO Individuals_sharing_Individuals VALUES (4,5);
+-- Vote --
+INSERT INTO Vote VALUES (1,2,'2024-10-10');
