@@ -1,0 +1,27 @@
+CREATE FUNCTION exclusion()
+RETURNS trigger as $$
+DECLARE
+nb_votes INT;
+nb_members INT;
+BEGIN
+SELECT COUNT(*) INTO nb_votes
+FROM Vote
+WHERE Membership_id2 = new.membership_id2;
+SELECT COUNT(*) INTO nb_members
+FROM Membership
+WHERE targets = (SELECT targets
+FROM Membership
+WHERE membership_id = new.membership_id2);
+If nb_votes >= (nb_members/2.0) THEN
+UPDATE Membership
+SET exclued = TRUE
+WHERE membership_id = new.membership_id2;
+END if;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE trigger trigg_exclusion
+AFTER INSERT ON Vote
+FOR EACH ROW
+11
+EXECUTE FUNCTION exclusion();
