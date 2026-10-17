@@ -1,9 +1,9 @@
 import psycopg2
 
-HOST = "tuxa.sme.utc"
-USER = "ed05a008"
-PASSWORD = "q0nbsgrSK0IM"
-DATABASE = "dbed05a008"
+HOST = "host"
+USER = "user"
+PASSWORD = "your password"
+DATABASE = "database"
 
 def connect():
     return psycopg2.connect("host=%s dbname=%s user=%s password=%s" %
