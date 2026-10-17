@@ -1,0 +1,57 @@
+# Community Exchange Network — Database Project
+
+Design and implementation of a database for a local exchange network where individuals and communities share skills, offer services and pay in **Ğ1**, a free cryptocurrency.
+
+---
+
+## Context
+
+The application models a social and economic network in which:
+- **Individuals** and **communities** are both *entities* (inheritance)
+- Entities can hold **Ğ1 accounts**, exchange **messages** (with reply threads) and declare **skills** with a level of expertise
+- Individuals offer **services** (free of charge, exchange or commercial) and build **relationships**
+- Individuals join communities through **memberships**, and members can **vote to exclude** another member
+- Communities can declare **links** (e.g. partnerships) with each other
+
+## What was built
+
+### 1. Conceptual & logical design
+- UML **class diagram** (`Class diagram.png`)
+- **Logical relational model** with inheritance handled through views (`Logical model`)
+
+### 2. SQL implementation (PostgreSQL)
+- 15 tables with primary/foreign keys, `UNIQUE`, `NOT NULL` and `CHECK` constraints (`SQL Implementation`)
+- Sample data to populate every table (`Populating the tables`)
+- **Business rule enforced by a PL/pgSQL trigger** (`SQL trigger`): when votes against a member reach half of the community's members, the member is automatically excluded
+
+### 3. Python application (command-line)
+- `menu.py` — interactive menu: identify or register a user, then 17 actions (join/create a community, send messages, view threads, declare skills, offer services, vote for exclusion, add a Ğ1 key, etc.)
+- `form.py` — write operations (inserts / updates with transaction handling)
+- `reports.py` — read queries and views: search, membership lists, message threads, **proximity view** (closest members by distance) and **OpenStreetMap** links
+
+## Repository structure
+
+```
+├── Class diagram.png        # UML conceptual model
+├── Logical model            # Relational schema
+├── SQL Implementation       # CREATE TABLE statements
+├── SQL trigger              # PL/pgSQL exclusion trigger
+├── Populating the tables    # Sample data
+├── menu.py                  # CLI entry point
+├── form.py                  # Data entry functions
+└── reports.py               # Queries & views
+```
+
+## How to run
+
+1. Create a PostgreSQL database and run, in order: `SQL Implementation`, `SQL trigger`, `Populating the tables`
+2. Set your connection details in `form.py` and `reports.py`
+3. Install the driver and launch the menu:
+```bash
+pip install psycopg2-binary
+python menu.py
+```
+
+## Skills demonstrated
+
+Data modelling (UML → relational) · SQL / DDL · Integrity constraints · PL/pgSQL triggers · Python–PostgreSQL integration · Transactions · Application design
