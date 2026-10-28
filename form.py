@@ -10,18 +10,12 @@ def connect():
     return psycopg2.connect("host=%s dbname=%s user=%s password=%s" %
                             (HOST, DATABASE, USER, PASSWORD))
 
-# ---------------------------------------------------------
 # Utility for next ID
-# ---------------------------------------------------------
-
 def next_id(cursor, table, column):
     cursor.execute("SELECT COALESCE(MAX(%s), 0) + 1 FROM %s" % (column, table))
     return cursor.fetchone()[0]
 
-# ---------------------------------------------------------
 # Individuals
-# ---------------------------------------------------------
-
 def add_individual(name, last_name, coords):
     conn = connect()
     cur = conn.cursor()
@@ -47,10 +41,7 @@ def update_coordinates(ind_id, coords):
     conn.commit()
     conn.close()
 
-# ---------------------------------------------------------
 # Communities
-# ---------------------------------------------------------
-
 def add_community(name, description, admin_id):
     conn = connect()
     cur = conn.cursor()
@@ -86,10 +77,7 @@ def join_community(ind_id, com_id):
     conn.commit()
     conn.close()
 
-# ---------------------------------------------------------
 # Voting for exclusion
-# ---------------------------------------------------------
-
 def vote_exclusion(voter_mid, target_mid):
     conn = connect()
     cur = conn.cursor()
@@ -135,10 +123,7 @@ def vote_exclusion(voter_mid, target_mid):
         conn.close()
 
 
-# ---------------------------------------------------------
 # Relationships
-# ---------------------------------------------------------
-
 def add_relationship(source_id, target_id, description):
     conn = connect()
     cur = conn.cursor()
@@ -151,10 +136,7 @@ def add_relationship(source_id, target_id, description):
     conn.commit()
     conn.close()
 
-# ---------------------------------------------------------
 # Community links (community to community)
-# ---------------------------------------------------------
-
 def add_link(source_com, target_com, description):
     conn = connect()
     cur = conn.cursor()
@@ -167,10 +149,7 @@ def add_link(source_com, target_com, description):
     conn.commit()
     conn.close()
 
-# ---------------------------------------------------------
 # Skills (usable by individuals and communities)
-# ---------------------------------------------------------
-
 def add_skill(skill_type):
     conn = connect()
     cur = conn.cursor()
@@ -193,10 +172,7 @@ def declare_expertise(entity_id, skill_id, degree):
     conn.commit()
     conn.close()
 
-# ---------------------------------------------------------
 # Services
-# ---------------------------------------------------------
-
 def add_service(name, description, service_type):
     conn = connect()
     cur = conn.cursor()
@@ -223,10 +199,7 @@ def link_service(ind_id, service_id):
     conn.commit()
     conn.close()
 
-# ---------------------------------------------------------
 # Messaging
-# ---------------------------------------------------------
-
 def send_message(sender, recipient, content, ref=None):
     conn = connect()
     cur = conn.cursor()
@@ -239,10 +212,7 @@ def send_message(sender, recipient, content, ref=None):
     conn.commit()
     conn.close()
 
-# ---------------------------------------------------------
 # G1 accounts (individuals and communities)
-# ---------------------------------------------------------
-
 def add_g1(entity_id, key):
     conn = connect()
     cur = conn.cursor()
